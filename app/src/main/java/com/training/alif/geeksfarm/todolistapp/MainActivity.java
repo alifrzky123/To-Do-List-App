@@ -57,10 +57,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         String task = String.valueOf(taskEditText.getText());
                         Log.d(TAG,"Task to add: " + task);
-                        String itemText = etNewItem.getText().toString();
-                        itemsAdapter.add(itemText);
-                        etNewItem.setText("");
-                        etNewItem.getText().toString();
+                        itemsAdapter.add("halo");
                     }
                 })
                 .setNegativeButton("Cancel", null)
