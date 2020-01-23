@@ -26,8 +26,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initial();
-        lvItems.setAdapter(itemsAdapter);
 
+        loadDataSh();
+        lvItems.setAdapter(itemsAdapter);
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -73,20 +74,31 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                        items.add(taskEditText.getText().toString());
-                        itemsAdapter.notifyDataSetChanged();
+                                int newKey = items.size();
+                                String item = taskEditText.getText().toString();
+                                items.add(newKey,item);
+                                itemsAdapter.notifyDataSetChanged();
+                                addToSh(newKey,item);
                     }
                 })
                 .setNegativeButton("Cancel", null)
                 .create();
         dialog.show();
     }
-    public void addToSh(){
+    public void addToSh(int key, String item){
         SharedPreferences share = getSharedPreferences("to do" , MODE_PRIVATE);
         SharedPreferences.Editor Edit = share.edit();
         String k = String.valueOf(key);
-        edit.putString(k, items);
-        edit.apply();
-
+        Edit.putString(k, item);
+        Edit.apply();
+    }
+    public void loadDataSh(){
+        SharedPreferences sh = getSharedPreferences("to do", MODE_PRIVATE);
+        if (sh.getAll().size() > 0){
+            for (int i=0 ; i< sh.getAll().size(); i++){
+                String key = String.valueOf(i);
+                items.add(sh.getString(key, null));
+            }
+        }
     }
 }
